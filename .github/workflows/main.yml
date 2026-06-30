@@ -1,28 +1,25 @@
-name: FABRICATION AGRO ERP
+name: APK-GENERATOR
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4  # Mis à jour en v4
 
-      - name: Installation de Java
-        uses: actions/setup-java@v3
+      - name: Mise en place de Java
+        uses: actions/setup-java@v4 # Mis à jour en v4
         with:
           java-version: '17'
           distribution: 'temurin'
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3 # Utilisation de l'action officielle Gradle
 
-      - name: Reparation et Creation du moteur Gradle
-        run: |
-          # Cette partie crée les fichiers manquants automatiquement
-          gradle wrapper --gradle-version 8.0
-          chmod +x gradlew
+      - name: Fabriquer l'APK
+        run: chmod +x gradlew && ./gradlew assembleDebug
 
-      - name: Fabrication de l'APK (AGRO ERP)
-        run: ./gradlew assembleDebug --stacktrace
-
-      - name: Telechargement de l'APK final
-        uses: actions/upload-artifact@v3
+      - name: Livrer l'APK final
+        uses: actions/upload-artifact@v4 # C'EST ICI LA CORRECTION (v4 au lieu de v3)
         with:
-          name: AGRO-ERP-V1-INSTALLABLE
+          name: AGRO-ERP-INSTALLABLE
           path: app/build/outputs/apk/debug/app-debug.apk
