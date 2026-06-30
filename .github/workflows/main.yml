@@ -1,4 +1,4 @@
-name: name: Build-APK
+name: FABRICATION-APK
 on: [push]
 jobs:
   build:
@@ -10,12 +10,19 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build APK
+
+      - name: Installer Gradle (le fabriquant)
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          chmod +x gradlew || true
-          gradle assembleDebug --stacktrace
-      - name: Upload APK
+          sudo apt-get install gradle
+          gradle wrapper --gradle-version 8.0
+
+      - name: Donner les permissions
+        run: chmod +x gradlew
+
+      - name: Fabriquer l'APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Livrer l'APK
         uses: actions/upload-artifact@v3
         with:
           name: AGRO-ERP-INSTALLABLE
