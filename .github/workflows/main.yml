@@ -1,29 +1,28 @@
-name: FABRICATION-APK
+name: FABRICATION AGRO ERP
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Java
+
+      - name: Installation de Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Installer Gradle (le fabriquant)
+      - name: Reparation et Creation du moteur Gradle
         run: |
-          sudo apt-get install gradle
+          # Cette partie crée les fichiers manquants automatiquement
           gradle wrapper --gradle-version 8.0
+          chmod +x gradlew
 
-      - name: Donner les permissions
-        run: chmod +x gradlew
-
-      - name: Fabriquer l'APK
+      - name: Fabrication de l'APK (AGRO ERP)
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Livrer l'APK
+      - name: Telechargement de l'APK final
         uses: actions/upload-artifact@v3
         with:
-          name: AGRO-ERP-INSTALLABLE
+          name: AGRO-ERP-V1-INSTALLABLE
           path: app/build/outputs/apk/debug/app-debug.apk
